@@ -15,7 +15,7 @@ app.use(express.json())
 //cdUtfNd0wo2i0rO3
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = "mongodb+srv://crudfinal:cdUtfNd0wo2i0rO3@cluster0.9b6ho97.mongodb.net/?retryWrites=true&w=majority";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -41,7 +41,13 @@ async function run() {
 
     })
 
-    
+    app.delete('/users/:id',async(req,res)=>{
+        const id=req.params.id;
+        const query={_id: new ObjectId(id)}
+        const result= await UserCollection.deleteOne(query);
+        res.send(result);
+    })
+
     app.get('/users',async(req,res)=>{
         const cursor= UserCollection.find();
         const result= await cursor.toArray();
